@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gerdaseldas</title>
     <link rel="shortcut icon" type="image/x-icon" href="./img/icon.ico">
   
@@ -950,5 +950,108 @@
             });
         }
     </script>
+
+
+<!-- SCRIPT ANTI-COPY, ANTI-INSPECT, ANTI-ZOOM, ANTI-DOWNLOAD -->
+<style>
+    /* Mencegah seleksi teks dan drag gambar di CSS */
+    body {
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* IE/Edge */
+        user-select: none;         /* Standard */
+        
+        /* Mencegah gesture zoom di layar sentuh (Mobile) */
+        touch-action: pan-x pan-y;
+    }
+
+    img, video {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+        pointer-events: none; /* Mencegah klik & hold pada gambar di HP */
+    }
+</style>
+
+<script>
+    // 1. ANTI KLIK KANAN (Context Menu)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // 2. ANTI SALIN, POTONG, TEMPEL, & SELECT
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('paste', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+
+    // 3. ANTI INSPECT ELEMENT (Shortcuts Keyboard)
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Select Element)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+S (Save Page) & Ctrl+P (Print)
+        if (e.ctrlKey && (e.key === 'S' || e.key === 's' || e.key === 'P' || e.key === 'p')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // 4. ANTI ZOOM KEYBOARD (Ctrl + Plus/Minus/Wheel)
+        if (e.ctrlKey && (e.key === '=' || e.key === '-' || e.key === '+' || e.keyCode === 187 || e.keyCode === 189)) {
+            e.preventDefault();
+        }
+    });
+
+    // ANTI ZOOM WHEEL (Scroll Mouse + Ctrl)
+    document.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // 5. ANTI ZOOM PINCH & DOUBLE TAP (Mobile Touch Devices)
+    document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+            e.preventDefault(); // Mencegah pinch-to-zoom 2 jari
+        }
+    }, { passive: false });
+
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault(); // Mencegah double tap to zoom
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    // 6. DETEKSI DEVTOOLS DIBUKA (Auto Clear / Blur)
+    setInterval(function() {
+        const before = new Date().getTime();
+        debugger;
+        const after = new Date().getTime();
+        if (after - before > 100) {
+            document.body.innerHTML = 'Access Denied';
+        }
+    }, 1000);
+</script>
+
 </body>
 </html>
