@@ -547,6 +547,20 @@
             text-shadow: 0 0 8px var(--accent-green);
         }
 
+
+/* Menghilangkan warna highlight biru saat elemen diklik/ditap */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    outline: none;
+}
+
+/* Menghilangkan border focus saat elemen seperti button atau link diklik */
+a:focus, button:focus, div:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
     </style>
 </head>
 <body>
